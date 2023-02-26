@@ -50,7 +50,7 @@ public class QuickSort {
     }
 
     /**
-     * 双边循环快排
+     * 对[l,r]内的元素进行双边循环快排
      *
      * @param array 需要排序的数组
      */
@@ -58,9 +58,11 @@ public class QuickSort {
         if (l >= r) {
             return;
         }
-        int i = hoarePartition(array, l, r);
-        hoareSort(array, l, i - 1);
-        hoareSort(array, i + 1, r);
+        int mid = hoarePartition(array, l, r);
+        // 递归对左半部分进行处理
+        hoareSort(array, l, mid - 1);
+        // 递归对右半部分进行处理
+        hoareSort(array, mid + 1, r);
     }
 
     public static int hoarePartition(int[] array, int l, int r) {
@@ -70,15 +72,21 @@ public class QuickSort {
         // 右指针
         int j = r;
         while (i < j) {
+            // 右指针向左移动，直到找到比基准点元素小的位置
             while (i < j && array[j] > pv) {
                 j--;
             }
+            // 注意此处应该是小于等于，否则可能会陷入死循环
+            // 左指针向右移动，直到找到比基准点元素大的位置
             while (i < j && array[i] <= pv) {
                 i++;
             }
+            // 交换两个位置的元素
             swap(array, i, j);
         }
+        // 最后还需要把基准点放回到右指针的位置
         swap(array, j, l);
+        // 返回基准点当前的位置
         return j;
     }
 
